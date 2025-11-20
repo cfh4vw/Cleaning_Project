@@ -1,5 +1,6 @@
 from flask import Flask, request, send_file, render_template_string
 import pandas as pd
+import numpy as np
 from io import BytesIO
 
 app = Flask(__name__)
@@ -25,7 +26,26 @@ def index():
 # Cleaning function: fill NaN with 0
 def clean_dataframe(df):
     df = df.copy()
-    df = df.fillna(0)
+
+    #standardize column names and data
+    df.columns = (df.columns.str.strip().str.lower().str.replace(" ","_"))
+    for col in df.select_dtypes(include=["object"]).columns:
+        df[col] = df[col].astype(str).str.strip().str.lower()
+        
+    #identifying columns
+    numeric_cols = df.select_dtypes(include=np.number)
+    category_cols = df.select_dtypes(include=['category'])
+    
+    #clean missing values
+    df[numeric_cols] = df[numeric_cols].fillna(0)
+    df = df.dropna(subset=category_cols)
+
+    #remove duplicate rows
+    df = df.drop_duplicates()
+
+    #Convert Data Types
+    df = df.convert_dtypes()
+    
     return df
 
 # Cleaning endpoint
