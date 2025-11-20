@@ -37,6 +37,7 @@ def clean_dataframe(df):
     category_cols = df.select_dtypes(exclude=[np.number]).columns
     
     #clean missing values
+    df = df.replace(["nan", "none", "", "error", "unknown", "N/A"], pd.NA)
     df[numeric_cols] = df[numeric_cols].fillna(0)
     df = df.dropna(subset=category_cols)
 
