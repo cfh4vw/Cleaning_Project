@@ -19,6 +19,11 @@ COPY assets/ ./assets
 
 EXPOSE 5000
 
+# Set Flask environment variables
+ENV FLASK_APP=src/app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5000
+
 # Run the app
-CMD ["python", "src/app.py"]
+CMD ["flask", "run"]
 
