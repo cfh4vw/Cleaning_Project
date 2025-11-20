@@ -33,8 +33,8 @@ def clean_dataframe(df):
         df[col] = df[col].astype(str).str.strip().str.lower()
         
     #identifying columns
-    numeric_cols = df.select_dtypes(include=np.number)
-    category_cols = df.select_dtypes(include=['category'])
+    numeric_cols = df.select_dtypes(include=[np.number]).columns
+    category_cols = df.select_dtypes(exclude=[np.number]).columns
     
     #clean missing values
     df[numeric_cols] = df[numeric_cols].fillna(0)
