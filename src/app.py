@@ -1,9 +1,10 @@
-from flask import Flask, request, send_file, render_template_string
+from flask import Flask, request, send_file, render_template_string, session
 import pandas as pd
 import numpy as np
 from io import BytesIO
 
 app = Flask(__name__)
+app.secret_key = "key123"
 
 # Health check
 @app.route("/health")
